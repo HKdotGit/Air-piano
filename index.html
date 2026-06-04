@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Air Piano | U'lectro 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #030305;
+            --surface-color: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --primary: #00ffcc;
+            --secondary: #7000ff;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: radial-gradient(circle at 10% 20%, rgba(112, 0, 255, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 90% 80%, rgba(0, 255, 204, 0.15) 0%, transparent 50%);
+        }
+
+        nav {
+            width: 100%;
+            padding: 25px 5%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(3, 3, 5, 0.5);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px 40px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .instructions {
+            display: inline-block;
+            margin-top: 30px;
+            background: linear-gradient(90deg, rgba(112, 0, 255, 0.2), rgba(0, 255, 204, 0.2));
+            padding: 15px 30px;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+            font-weight: 600;
+        }
+
+        .song-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 40px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .song-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: left;
+        }
+
+        .song-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+        }
+
+        .song-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .song-card:hover::before {
+            opacity: 1;
+        }
+
+        .mode-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .song-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .song-artist {
+            color: var(--primary);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .song-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 60px 20px;
+            margin-top: 50px;
+            border-top: 1px solid var(--border-color);
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .footer p {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #fff, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .logo { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-bg"></div>
+
+    <nav>
+        <div class="logo">Virtual Air Piano</div>
+    </nav>
+
+    <section class="hero">
+        <h1>Select Your Track</h1>
+        <p>Your Virtual Air Piano is loaded with 5 exclusive song modes. Run the AR App and use the <kbd>S</kbd> key to switch between the following modes.</p>
+        <div class="instructions">
+            > Python AR App: Press "S" to cycle songs
+        </div>
+    </section>
+
+    <div class="song-grid">
+        <!-- Song 1 -->
+        <div class="song-card">
+            <div class="mode-badge">MODE 0</div>
+            <h3 class="song-title">Ishq Jalakar</h3>
+            <div class="song-artist">Dhurandhar</div>
+            <p class="song-desc">Immerse yourself in deeply soulful Sufi undertones and cinematic vibes.</p>
+        </div>
+
+        <!-- Song 2 -->
+        <div class="song-card">
+            <div class="mode-badge">MODE 1</div>
+            <h3 class="song-title">Never Gonna Give You Up</h3>
+            <div class="song-artist">Rick Astley</div>
+            <p class="song-desc">Play the iconic upbeat pop hook that captured the internet forever.</p>
+        </div>
+
+        <!-- Song 3 -->
+        <div class="song-card">
+            <div class="mode-badge">MODE 2</div>
+            <h3 class="song-title">Na De Dil Pardesi Nu</h3>
+            <div class="song-artist">Dhurandhar</div>
+            <p class="song-desc">A classic traditional rhythm mapped seamlessly to your hand movements.</p>
+        </div>
+
+        <!-- Song 4 -->
+        <div class="song-card">
+            <div class="mode-badge">MODE 3</div>
+            <h3 class="song-title">Shape of You</h3>
+            <div class="song-artist">Ed Sheeran</div>
+            <p class="song-desc">Groove with the catchy, infectious minor pentatonic Marimba rhythm.</p>
+        </div>
+
+        <!-- Song 5 -->
+        <div class="song-card">
+            <div class="mode-badge">MODE 4</div>
+            <h3 class="song-title">Blinding Lights</h3>
+            <div class="song-artist">The Weeknd</div>
+            <p class="song-desc">Experience the retro-styled synthwave magic at your fingertips.</p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>By IETE-SF MPSTME, For U'lectro 2026!</p>
+    </footer>
+
+</body>
+</html>
