@@ -34,14 +34,7 @@ A virtual piano that can be played using hand gestures detected through a webcam
 
 ## Author
 
-**Hrishikesh Kunde**
-
-Computer Science Student passionate about Artificial Intelligence, Computer Vision, and building interactive software solutions.
-
-- GitHub: https://github.com/yourusername
-- LinkedIn: https://linkedin.com/in/yourprofile
-- Portfolio: https://yourportfolio.com
-
+Hrishikesh Kunde
 ---
 
 ## Contributing
